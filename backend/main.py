@@ -152,4 +152,11 @@ def get_signals() -> dict:
     result = generate_signal(df)
     # Add the latest price to the response
     result["price"] = float(df["Soybeans"].iloc[-1])
+                  # Include forecast if available
+    forecast_path = Path(__file__).resolve().parent / ".." / "artifacts" / "forecast.csv"
+    if forecast_path.exists():
+        fc_df = pd.read_csv(forecast_path)
+        result["forecast"] = fc_df.to_dict(orient="records")
+
     return result
+       
